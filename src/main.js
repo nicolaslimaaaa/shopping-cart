@@ -5,45 +5,45 @@ import { createProductElement } from './helpers/shopFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
-//
-const addLoading = () => {
+// Adicona uma mensagem de "CARREGANDO ..." e/ou "Algum erro ocorreu, recarregue a página e tente novamente"
+const addMessage = (classe, message) => {
   const sectionProducts = document.querySelector('.products');
 
-  const sectionLoading = document.createElement('section');
-  sectionLoading.classList.add('loading');
-  sectionLoading.innerHTML = 'CARREGANDO ...';
-  sectionProducts.appendChild(sectionLoading);
+  const sectionMessage = document.createElement('section');
 
-  return sectionLoading;
+  sectionMessage.classList.add(classe);
+  sectionMessage.innerHTML = message;
+  sectionProducts.appendChild(sectionMessage);
 };
 
-//
-const removeLoading = () => {
-  const sectionProducts = document.querySelector('.products');
-
-  const sectionLoading = document.querySelector('.loading');
-  sectionProducts.removeChild(sectionLoading);
+// Remove o elemento que emite a mensagem "CARREGANDO" e/ou "Algum erro ocorreu, recarregue a página e tente novamente"
+const removeMessage = (classe) => {
+  const sectionMessage = document.querySelector(`.${classe}`);
+  sectionMessage.remove();
 };
 
 const addCreateProductElement = async () => {
-  addLoading();
+  addMessage('loading', 'CARREGANDO ...');
 
   const sectionProducts = document.querySelector('.products');
 
-  const array = await fetchProductsList('computador');
+  try {
+    const array = await fetchProductsList('computador');
+    array.forEach((element) => {
+      const produto = createProductElement({
+        id: element.id,
+        title: element.title,
+        thumbnail: element.thumbnail,
+        price: element.price,
+      });
 
-  array.forEach((element) => {
-    const produto = createProductElement({
-      id: element.id,
-      title: element.title,
-      thumbnail: element.thumbnail,
-      price: element.price,
+      sectionProducts.appendChild(produto);
     });
+  } catch (erro) {
+    addMessage('error', 'Algum erro ocorreu, recarregue a página e tente novamente');
+  }
 
-    sectionProducts.appendChild(produto);
-  });
-
-  removeLoading();
+  removeMessage('loading');
 };
 
 await addCreateProductElement();

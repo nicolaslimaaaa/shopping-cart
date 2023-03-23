@@ -1,12 +1,34 @@
 import { searchCep } from './helpers/cepFunctions';
 import './style.css';
 import { fetchProductsList } from './helpers/fetchFunctions';
-import { createProductElement, createCustomElement } from './helpers/shopFunctions';
+import { createProductElement } from './helpers/shopFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
+//
+const addLoading = () => {
+  const sectionProducts = document.querySelector('.products');
+
+  const sectionLoading = document.createElement('section');
+  sectionLoading.classList.add('loading');
+  sectionLoading.innerHTML = 'CARREGANDO ...';
+  sectionProducts.appendChild(sectionLoading);
+
+  return sectionLoading;
+};
+
+//
+const removeLoading = () => {
+  const sectionProducts = document.querySelector('.products');
+
+  const sectionLoading = document.querySelector('.loading');
+  sectionProducts.removeChild(sectionLoading);
+};
+
 const addCreateProductElement = async () => {
-  const sectionContainer = document.querySelector('.container');
+  addLoading();
+
+  const sectionProducts = document.querySelector('.products');
 
   const array = await fetchProductsList('computador');
 
@@ -18,8 +40,10 @@ const addCreateProductElement = async () => {
       price: element.price,
     });
 
-    sectionContainer.appendChild(produto);
+    sectionProducts.appendChild(produto);
   });
+
+  removeLoading();
 };
 
 await addCreateProductElement();

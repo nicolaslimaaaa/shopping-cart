@@ -1,6 +1,6 @@
 import { searchCep } from './helpers/cepFunctions';
 import './style.css';
-import { fetchProductsList } from './helpers/fetchFunctions';
+import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
 import { createProductElement } from './helpers/shopFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
@@ -22,6 +22,7 @@ const removeMessage = (classe) => {
   sectionMessage.remove();
 };
 
+// Adiciona os elementos retornados da API na tela
 const addCreateProductElement = async () => {
   addMessage('loading', 'CARREGANDO ...');
 
@@ -39,7 +40,7 @@ const addCreateProductElement = async () => {
 
       sectionProducts.appendChild(produto);
     });
-  } catch (erro) {
+  } catch (_error) {
     addMessage('error', 'Algum erro ocorreu, recarregue a página e tente novamente');
   }
 

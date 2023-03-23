@@ -18,8 +18,8 @@ describe('Teste a função fetchProductsList', () => {
     expect(fetch).toHaveBeenCalledWith('https://api.mercadolibre.com/sites/MLB/search?q=computador');
   });
 
-  it('o retorno da função fetchProductsList com o argumento "computador" é igual ao objeto computadorSearch', () => {
-    expect(fetchProductsList('computador')).resolves.toMatchObject(computadorSearch)
+  it('o retorno da função fetchProductsList com o argumento "computador" é igual ao objeto computadorSearch', async () => {
+    expect(await fetchProductsList('computador')).toMatchObject(computadorSearch)
   });
 
   it('o retorno da função fetchProductsList sem argumento retorna um erro com a mensagem "Termo de busca não informado"', async () => {

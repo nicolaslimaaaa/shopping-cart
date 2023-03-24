@@ -1,7 +1,8 @@
 import { searchCep } from './helpers/cepFunctions';
 import './style.css';
 import { fetchProductsList, fetchProduct } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { createProductElement, createCartProductElement } from './helpers/shopFunctions';
+import { getSavedCartIDs } from './helpers/cartFunctions';
 
 document.querySelector('.cep-button').addEventListener('click', searchCep);
 
@@ -48,3 +49,21 @@ const addCreateProductElement = async () => {
 };
 
 await addCreateProductElement();
+
+// Carrega o carrinho de compras ao iniciar a página
+const getItemsCart = async () => {
+  const itemsCart = getSavedCartIDs();
+
+  const arrayPromises = itemsCart.map(async (item) => {
+    const retorno = await fetchProduct(item);
+    return retorno;
+  });
+
+  const cartArray = await Promise.all(arrayPromises);
+  cartArray.forEach((item) => console.log(createCartProductElement(item)));
+
+  const olEl = document.querySelector('.cart__products');
+  olEl.appendChild(cartArray);
+};
+
+getItemsCart();

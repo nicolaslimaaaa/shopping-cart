@@ -60,10 +60,13 @@ const getItemsCart = async () => {
   });
 
   const cartArray = await Promise.all(arrayPromises);
-  cartArray.forEach((item) => console.log(createCartProductElement(item)));
 
   const olEl = document.querySelector('.cart__products');
-  olEl.appendChild(cartArray);
+
+  cartArray.map((item) => {
+    const recoveredProduct = createCartProductElement(item);
+    return olEl.appendChild(recoveredProduct);
+  });
 };
 
 getItemsCart();

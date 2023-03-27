@@ -257,7 +257,7 @@ describe('Shopping Cart Project', () => {
     });
   });
 
-  describe.only('11 - Implemente a função `getAddress`', () => { 
+  describe('11 - Implemente a função `getAddress`', () => { 
     it('Verifica se o endereço é exibido após o CEP ser digitado', () => {
       cy.visit(PROJECT_URL, {
         onBeforeLoad(win) {

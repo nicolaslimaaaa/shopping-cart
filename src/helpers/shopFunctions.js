@@ -123,12 +123,27 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
     'Adicionar ao carrinho!',
   );
 
+  // Função que altera o preço total do carrinho
+  const totalPrice = document.querySelector('.total-price');
+
+  const addItems = async (item) => {
+    let total = Number(totalPrice.innerHTML);
+    const product = await fetchProduct(item);
+    total += product.price;
+    totalPrice.innerHTML = total.toFixed(2);
+    localStorage.setItem('price', total.toFixed(2));
+    console.log(totalPrice);
+
+    return total;
+  };
+
   cartButton.addEventListener('click', async () => {
     saveCartID(id);
     const item = await fetchProduct(id);
     const produto = createCartProductElement(item);
     const olEl = document.querySelector('.cart__products');
     olEl.appendChild(produto);
+    addItems(id);
   });
 
   section.appendChild(cartButton);

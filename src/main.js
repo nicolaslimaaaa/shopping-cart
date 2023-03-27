@@ -67,6 +67,10 @@ const getItemsCart = async () => {
     const recoveredProduct = createCartProductElement(item);
     return olEl.appendChild(recoveredProduct);
   });
+
+  const price = localStorage.getItem('price');
+  const totalPriceEl = document.querySelector('.total-price');
+  totalPriceEl.innerHTML = price || 0;
 };
 
 getItemsCart();

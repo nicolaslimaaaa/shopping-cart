@@ -88,7 +88,20 @@ export const createCartProductElement = ({ id, title, price, pictures }) => {
   );
   li.appendChild(removeButton);
 
-  li.addEventListener('click', () => removeCartProduct(li, id));
+  // Função que diminui o price do preço total do carrinho
+  const removeItems = async (item) => {
+    const totalPrice = document.querySelector('.total-price');
+    const product = await fetchProduct(item);
+    const currentTotalPrice = Number(localStorage.getItem('price'));
+    const newTotalPrice = currentTotalPrice - product.price;
+    totalPrice.innerHTML = newTotalPrice.toFixed(2);
+    localStorage.setItem('price', newTotalPrice.toFixed(2));
+  };
+
+  li.addEventListener('click', () => {
+    removeCartProduct(li, id);
+    removeItems(id);
+  });
   return li;
 };
 
@@ -123,16 +136,14 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
     'Adicionar ao carrinho!',
   );
 
-  // Função que altera o preço total do carrinho
-  const totalPrice = document.querySelector('.total-price');
-
+  // Função que soma o price no preço total do carrinho
   const addItems = async (item) => {
+    const totalPrice = document.querySelector('.total-price');
     let total = Number(totalPrice.innerHTML);
     const product = await fetchProduct(item);
     total += product.price;
     totalPrice.innerHTML = total.toFixed(2);
     localStorage.setItem('price', total.toFixed(2));
-    console.log(totalPrice);
 
     return total;
   };

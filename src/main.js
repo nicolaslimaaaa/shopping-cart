@@ -70,7 +70,7 @@ const getItemsCart = async () => {
 
   const price = localStorage.getItem('price');
   const totalPriceEl = document.querySelector('.total-price');
-  totalPriceEl.innerHTML = price || 0;
+  totalPriceEl.innerHTML = price || 0.00;
 };
 
 getItemsCart();
